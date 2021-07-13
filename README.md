@@ -7,3 +7,5 @@ untuk jawaban nomor satu
 untuk jawaban nomor dua
 - saya sediakan collection dan environment postman di folder vanz
 - table user ada di folder vanz/table 
+
+Terimakasih
