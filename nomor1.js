@@ -1,27 +1,51 @@
-function onlyUnique(x, y, z) {
-  y = x.length;
-  while (z = --y)
-    while (z--) x[y] !== x[z] || x.splice(z, 1);
-  return x
+function getAllAscii() {
+  var allChar = {}
+  for (var i = 1; i < 256; i++) {
+    allChar[String.fromCharCode(i)] = false
+  }
+
+  return allChar
 }
 
-var permArr = [],
-  usedChars = [];
+function getUnique(input) {
+  var ascii = getAllAscii()
+  var dataReturn = []
 
-function permute(input) {
-  var i, h;
-  for (i = 0; i < input.length; i++) {
-    h = input.splice(i, 1)[0];
-    usedChars.push(h);
-    if (input.length == 0) {
-      permArr.push(usedChars.slice());
+  for (let i = 0; i < input.length; i++) {
+    var char = input.charAt(i)
+
+    if (!ascii[char]) {
+      dataReturn.push(char)
+      ascii[char] = true
     }
-    permute(input);
-    input.splice(i, 0, h);
-    usedChars.pop();
   }
-  return permArr
-};
+  
+  return dataReturn.join('')
+}
+
+function getLexico(input) {
+  var ascii = getAllAscii()
+  var dataReturn = []
+
+  for (let i = 0; i < input.length; i++) {
+    var char = input.charAt(i)
+
+    if (!ascii[char]) {
+      dataReturn.push(char)
+      ascii[char] = true
+    } else {
+      var exKey = dataReturn.indexOf(char);
+      var checkReturn = dataReturn.join('')
+      if (exKey + 1 < dataReturn.length && checkReturn.charAt(exKey + 1) < char) {
+        const index = dataReturn.indexOf(char);
+        dataReturn.splice(index, 1)
+        dataReturn.push(char)
+      }
+    }
+  }
+  
+  return dataReturn.join('')
+}
 
 const readline = require('readline').createInterface({
   input: process.stdin,
@@ -29,8 +53,8 @@ const readline = require('readline').createInterface({
 })
 
 readline.question(`Silahkan masukan string ----> `, data => {
-  let split = data.split('')
-  console.log(permute(onlyUnique(split)))
+  console.log(getUnique(data))
+  console.log(getLexico(data))
 
   readline.close()
 })
